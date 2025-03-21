@@ -1,0 +1,41 @@
+﻿@section Scripts{
+	<script>
+                $(document).ready(function(){
+            $("#botonhospitales").click(function(){
+                var url = "https://apicorehospitalesaarong.azurewebsites.net/api/hospitales";
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    success: function(data){
+                        let html = "";
+                        $.each(data, function(index, hospital){
+                            html += "<tr>";
+                            html += "<td>" + hospital.nombre + "</td>";
+                            html += "<td>" + hospital.direccion + "</td>";
+                            html += "<td>" + hospital.telefono + "</td>";
+                            html += "<td>" + hospital.camas + "</td>";
+                            html += "</tr>";
+                        });
+                        $("#tablahospitales tbody").html(html);
+                    }
+                });
+            });
+        });
+	</script>
+}
+<h1>Consumo Api Hospitales Cliente</h1>
+<button id="botonhospitales" class="btn btn-primary">
+	Load Hospitales
+</button>
+
+<table class=" table table-bordered table-success" id="tablahospitales">
+	<thead>
+		<tr>
+			<th>Nombre</th>
+			<th>Direccion</th>
+			<th>Telefono</th>
+			<th>Camas</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>

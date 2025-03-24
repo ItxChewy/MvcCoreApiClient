@@ -10,9 +10,9 @@ namespace MvcCoreApiClient.Services
 
         private MediaTypeWithQualityHeaderValue header;
 
-        public ServiceHospitales()
+        public ServiceHospitales(IConfiguration configuration)
         {
-            this.ApiUrl = "https://apicorehospitalesaarong.azurewebsites.net/";
+            this.ApiUrl = configuration.GetValue<string>("ApiUrls:ApiHospitales");
             this.header = new MediaTypeWithQualityHeaderValue
                 ("application/json");
         }
@@ -33,6 +33,28 @@ namespace MvcCoreApiClient.Services
                         response.Content.ReadAsStringAsync();
                     List<Hospital> data =
                         JsonConvert.DeserializeObject<List<Hospital>>(json);
+                    return data;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public async Task<Hospital> FindHospitalAsync(int idHospital)
+        {
+            using(HttpClient client = new HttpClient())
+            {
+                string request = "api/hospitales/" + idHospital;
+                client.BaseAddress = new Uri(this.ApiUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(this.header);
+                HttpResponseMessage response =
+                    await client.GetAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    Hospital data = await response.Content.ReadAsAsync<Hospital>();
                     return data;
                 }
                 else

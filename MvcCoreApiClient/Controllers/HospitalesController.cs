@@ -22,6 +22,12 @@ namespace MvcCoreApiClient.Controllers
         {
             return View();
         }
+        public async Task<IActionResult>Details(int id)
+        {
+            Hospital hospital =
+                await this.service.FindHospitalAsync(id);
+            return View(hospital);
+        }
 
         public IActionResult Cliente()
         {

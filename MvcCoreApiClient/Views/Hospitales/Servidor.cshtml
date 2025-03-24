@@ -47,6 +47,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Camas)
             </td>
+            <td>
+                    <a asp-controller="Hospitales" asp-action="Details"
+                    asp-route-id="@item.IdHospital">Details</a>
+            </td>
         </tr>
 }
     </tbody>
